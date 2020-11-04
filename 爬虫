@@ -1,0 +1,20 @@
+from urllib.request import urlopen,Request
+from bs4 import BeautifulSoup
+
+url="http://www.cfbond.com/cfkx/index.html"
+headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3947.100 Safari/537.36'}
+ret=Request(url,headers=headers)
+html=urlopen(ret)
+bs=BeautifulSoup(html,"html.parser")
+div = bs.find('div',{"class":"wrapper"})
+ul = div.find('ul')
+for link in ul.find_all('a'):
+    links = link.get('href')
+    # print(links)
+    website = Request(links,headers=headers)
+    web = urlopen(website)
+    bs=BeautifulSoup(web,"html.parser")
+    contents = bs.find_all('p', {"style":"text-indent: 2em;"})
+    for content in contents:
+        content = content.get_text()
+        print(content)
