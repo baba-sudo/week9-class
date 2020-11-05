@@ -1,0 +1,17 @@
+from urllib.request import urlopen,Request
+from bs4 import BeautifulSoup
+
+f = open("test.txt", "w", encoding='UTF-8')
+for i in range(13,76):
+    url="https://www.uuzuowen.com/mingzhu/luanshijiaren/362"+ str(i)+".html"
+    headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3947.100 Safari/537.36'}
+    ret=Request(url,headers=headers)
+    html=urlopen(ret).read().decode('gbk')
+    bs=BeautifulSoup(html,"html.parser")
+    words = bs.find("div",{"class":"articleContent"})
+    word = words.find_all('p')
+    for i in word :
+        i = i.get_text()
+        # print (i)
+        f.write(i)
+f.close()
